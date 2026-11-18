@@ -74,7 +74,7 @@
   };
 
   const letters = ['A', 'B', 'C'];
-  const state = { subject: 'all', count: 20, timer: 0, filter: 'all', session: null };
+  const state = { subject: 'all', count: 20, timer: 0, filter: 'all', isExam: false, session: null };
   const $ = (id) => document.getElementById(id);
 
   function shuffle(items) {
@@ -165,7 +165,8 @@
       }),
       index: 0,
       correct: 0,
-      answers: []
+      answers: [],
+      examStyle: state.isExam
     };
 
     if(state.session.timerId) clearInterval(state.session.timerId);
@@ -208,7 +209,7 @@
     $('progress-label').textContent = `Domanda ${s.index + 1} di ${tot}`;
     $('progress-bar-fill').style.width = `${((s.index + 1) / tot) * 100}%`;
     $('subject-label').textContent = SUBJECTS[q.subject];
-    $('live-score').textContent = `${s.correct} corrette`;
+    $('live-score').textContent = s.examStyle ? `Modalità Esame` : `${s.correct} corrette`;
     
     $('q-number-label').textContent = `QUESITO ${q.id}`;
     const star = $('star-toggle');
@@ -268,7 +269,7 @@
     $('feedback-desc').textContent = isCorrect ? 'Ottimo lavoro.' : `Risposta esatta: ${q.correct}`;
     fb.hidden = false;
     $('next-action-container').hidden = false;
-    $('live-score').textContent = `${s.correct} corrette`;
+    $('live-score').textContent = s.examStyle ? `Modalità Esame` : `${s.correct} corrette`;
   }
 
   $('explain-btn').onclick = () => {
